@@ -624,4 +624,31 @@
   <p style="margin-top:8px;font-size:14px;">
     Designed with ❤️ for trusted and affordable electrical services
   </p>
+  </footer>
+
+<!-- ✅ Splash + Menu Script -->
+<script>
+  // ✅ Splash Screen auto hide after 1s
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      const splash = document.getElementById("splash");
+      if (splash) splash.style.display = "none";
+    }, 1000);
+  });
+
+  // ✅ Mobile menu toggle
+  function toggleMenu() {
+    document.getElementById("navbar").classList.toggle("active");
+  }
+
+  // ✅ Close menu after link click
+  document.querySelectorAll("#navbar a").forEach(link => {
+    link.addEventListener("click", () => {
+      document.getElementById("navbar").classList.remove("active");
+    });
+  });
+</script>
+
+</body>
+</html>
 </footer>
