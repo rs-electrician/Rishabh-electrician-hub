@@ -98,11 +98,11 @@
     })();
   </script>
   </head>
-
-  <body>
-
+  
   <!-- ✅ Splash Screen -->
   <div id="splash">⚡ Welcome to RS Electrician ⚡</div>
+  
+  <body>
 
   <!-- ✅ Header -->
   <header>
@@ -435,12 +435,12 @@
       }, error => {
         showPopup("❌ Something went wrong. Try again.", "error
 
-      <!-- ⭐ Feedback Section -->
+    <!-- 🌟 Feedback Section -->
 <section id="feedback">
   <h2>⭐ Customer Feedback</h2>
   <p style="text-align:center;">Please rate our service and share your experience</p>
 
-  <!-- ✅ Feedback Form -->
+  <!-- Feedback Form -->
   <form id="feedbackForm" style="max-width:600px;margin:auto;text-align:center;">
     <div id="starRating" style="font-size:28px;color:gray;cursor:pointer;margin-bottom:10px;">
       <span onclick="setRating(1)">★</span>
@@ -449,19 +449,19 @@
       <span onclick="setRating(4)">★</span>
       <span onclick="setRating(5)">★</span>
     </div>
-    <input type="hidden" name="rating" id="ratingValue" required>
-    <input type="text" id="fbName" name="name" placeholder="Your Name" required>
-    <input type="email" id="fbEmail" name="email" placeholder="Your Email (optional)">
-    <textarea id="fbMessage" name="feedback" placeholder="Write your feedback here..." required></textarea>
+    <input type="hidden" id="ratingValue" name="rating" required>
+    <input type="text" id="fName" name="name" placeholder="Your Name" required>
+    <input type="email" id="fEmail" name="email" placeholder="Your Email (optional)">
+    <textarea id="fMessage" name="feedback" placeholder="Write your feedback here..." required></textarea>
     <button type="submit">✨ Submit Feedback</button>
   </form>
 
-  <!-- ✅ Reviews List -->
+  <!-- Reviews List -->
   <div id="reviews" style="max-width:800px;margin:30px auto;"></div>
 
-  <!-- ✅ Toggle Button -->
+  <!-- Toggle Button -->
   <div style="text-align:center;margin-top:15px;">
-    <button id="toggleBtn" onclick="toggleReviews()" 
+    <button id="toggleBtn" onclick="toggleReviews()"
       style="background:#2980b9;color:#fff;padding:8px 16px;border:none;border-radius:6px;cursor:pointer;">
       Show All Reviews
     </button>
@@ -469,160 +469,101 @@
 </section>
 
 <script>
-  let selectedRating = 0;
-  let reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+let selectedRating = 0;
+let reviews = JSON.parse(localStorage.getItem("reviews")) || [];
 
-  // ⭐ Star Rating
-  function setRating(rating) {
-    selectedRating = rating;
-    document.getElementById("ratingValue").value = rating;
-    let stars = document.querySelectorAll("#starRating span");
-    stars.forEach((star, index) => {
-      star.style.color = (index < rating) ? "gold" : "gray";
-    });
-  }
-
-  // ✅ Random Names (First + Last Names)
-  const firstNames = [
-    "Rahul","Priya","Amit","Neha","Vikram","Pooja","Arjun","Anjali","Suresh","Meena",
-    "Karan","Riya","Rohit","Simran","Manoj","Kavita","Deepak","Sonia","Anil","Shreya",
-    "Mohit","Nisha","Ashok","Divya","Sanjay","Kirti","Vikas","Rekha","Naveen","Alka",
-    "Harsh","Sunita","Gaurav","Pallavi","Sameer","Payal","Tarun","Swati","Rajesh","Maya"
-  ];
-  const lastNames = [
-    "Sharma","Verma","Gupta","Singh","Yadav","Patel","Chaudhary","Nair","Reddy","Mishra",
-    "Khan","Ansari","Das","Iyer","Joshi","Rastogi","Kapoor","Bajaj","Mehta","Trivedi"
-  ];
-
-  // ✅ Feedback Messages (variety)
-  const feedbackList = [
-    "Very professional and quick service!",
-    "Affordable and reliable electrician.",
-    "Came on time and fixed everything perfectly.",
-    "Best service experience, highly recommended!",
-    "Polite behavior and excellent skills.",
-    "Solved my wiring issue within minutes.",
-    "Great work at reasonable prices.",
-    "Fast response and good customer support.",
-    "Clean work, no mess left behind.",
-    "I am very satisfied with their service.",
-    "Good job, will call again.",
-    "Best electrician I have ever hired.",
-    "Explained everything clearly before work.",
-    "Quick installation and neat finishing.",
-    "Worked very carefully and safely.",
-    "Trusted service, thank you!",
-    "Solved my inverter problem very well.",
-    "Fan and lights installed properly.",
-    "Handled commercial wiring very efficiently.",
-    "Excellent service even in emergency.",
-    "Highly skilled and very friendly.",
-    "Fixed my geyser installation perfectly.",
-    "Happy with their work, good experience.",
-    "Good value for money services.",
-    "Very cooperative and knowledgeable staff.",
-    "Professional approach, will recommend.",
-    "Satisfied with the quick repair.",
-    "Timely and effective solution.",
-    "Best technician for electrical jobs.",
-    "Very smooth and hassle-free process."
-  ];
-
-  // ✅ Generate Fake 100 Reviews (only once)
-  if (!localStorage.getItem("fakeAddedV3")) {
-    let fake = [];
-    for (let i = 1; i <= 100; i++) {
-      let randomFirst = firstNames[Math.floor(Math.random() * firstNames.length)];
-      let randomLast = lastNames[Math.floor(Math.random() * lastNames.length)];
-      let randomName = randomFirst + " " + randomLast;
-      let randomFeedback = feedbackList[Math.floor(Math.random() * feedbackList.length)];
-      let randomRating = Math.floor(Math.random() * 5) + 1;
-
-      fake.push({
-        name: randomName,
-        email: "",
-        message: randomFeedback,
-        rating: randomRating
-      });
-    }
-    reviews = reviews.concat(fake);
-    localStorage.setItem("reviews", JSON.stringify(reviews));
-    localStorage.setItem("fakeAddedV3", "true");
-  }
-
-  // ✅ Render Reviews Function
-  function renderReviews(showAll = false) {
-    const container = document.getElementById("reviews");
-    container.innerHTML = "";
-
-    let toShow = showAll ? reviews : reviews.slice(-5); // Last 5 reviews default
-    toShow.reverse().forEach(r => {
-      let stars = "★".repeat(r.rating) + "☆".repeat(5 - r.rating);
-      container.innerHTML += `
-        <div style="border:1px solid #ccc;padding:10px;margin:10px 0;border-radius:6px;background:#fafafa;">
-          <p><b>${r.name}</b> <span style="color:gold;">${stars}</span></p>
-          <p>${r.message}</p>
-        </div>
-      `;
-    });
-  }
-
-  // ✅ Feedback Form Submit
-  document.getElementById("feedbackForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    let name = document.getElementById("fbName").value;
-    let email = document.getElementById("fbEmail").value;
-    let message = document.getElementById("fbMessage").value;
-    let rating = selectedRating;
-
-    if (!rating) {
-      showPopup("❌ Please select a star rating!", "error");
-      return;
-    }
-
-    let newReview = { name, email, message, rating };
-    reviews.push(newReview);
-    localStorage.setItem("reviews", JSON.stringify(reviews));
-    renderReviews();
-
-    // ✅ Send via EmailJS
-    emailjs.send("service_9hwj82y", "template_nr7fqlw", {
-      customer_name: name,
-      email: email,
-      rating: rating,
-      feedback: message
-    }).then(res => {
-      showPopup("✅ Thank you for your feedback!", "success");
-      this.reset();
-      setRating(0);
-    }).catch(err => {
-      showPopup("❌ Failed to send feedback!", "error");
-    });
+// ⭐ Star Rating
+function setRating(rating) {
+  selectedRating = rating;
+  document.getElementById("ratingValue").value = rating;
+  const stars = document.querySelectorAll("#starRating span");
+  stars.forEach((star, index) => {
+    star.style.color = (index < rating) ? "gold" : "gray";
   });
+}
 
-  // ✅ Show/Hide Toggle
-  let allVisible = false;
-  function toggleReviews() {
-    allVisible = !allVisible;
-    renderReviews(allVisible);
-    document.getElementById("toggleBtn").innerText = allVisible ? "Hide Reviews" : "Show All Reviews";
+// Random Names + Messages
+const firstNames = ["Rahul","Priya","Amit","Neha","Vikram","Pooja","Arjun","Anjali","Suresh","Meena"];
+const lastNames  = ["Sharma","Verma","Gupta","Singh","Yadav","Patel","Chaudhary","Nair","Reddy"];
+const feedbackList = [
+  "Very professional and quick service!",
+  "Affordable and reliable electrician.",
+  "Came on time and fixed everything perfectly.",
+  "Best service experience, highly recommended.",
+  "Polite behavior and excellent skills."
+];
+
+// Generate Fake Reviews (first time only)
+if (!localStorage.getItem("fakeAdded")) {
+  let fake = [];
+  for (let i = 0; i < 100; i++) {
+    let randomName = firstNames[Math.floor(Math.random() * firstNames.length)] + " " +
+                     lastNames[Math.floor(Math.random() * lastNames.length)];
+    let randomFeedback = feedbackList[Math.floor(Math.random() * feedbackList.length)];
+    let randomRating = Math.floor(Math.random() * 5) + 1;
+    fake.push({ name: randomName, message: randomFeedback, rating: randomRating });
+  }
+  reviews = reviews.concat(fake);
+  localStorage.setItem("reviews", JSON.stringify(reviews));
+  localStorage.setItem("fakeAdded", "true");
+}
+
+// Render Reviews
+function renderReviews(showAll = false) {
+  const container = document.getElementById("reviews");
+  container.innerHTML = "";
+  let toShow = showAll ? reviews : reviews.slice(-5);
+  toShow.reverse().forEach(r => {
+    let stars = "★".repeat(r.rating) + "☆".repeat(5 - r.rating);
+    container.innerHTML += `
+      <div style="border:1px solid #ccc;padding:10px;margin:10px 0;border-radius:6px;background:#fafafa;">
+        <b>${r.name}</b> <span style="color:gold;">${stars}</span>
+        <p>${r.message}</p>
+      </div>
+    `;
+  });
+}
+
+// Toggle Reviews
+let allVisible = false;
+function toggleReviews() {
+  allVisible = !allVisible;
+  renderReviews(allVisible);
+  document.getElementById("toggleBtn").innerText = allVisible ? "Hide Reviews" : "Show All Reviews";
+}
+
+// Feedback Form Submit
+document.getElementById("feedbackForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  let name = document.getElementById("fName").value;
+  let email = document.getElementById("fEmail").value;
+  let message = document.getElementById("fMessage").value;
+  let rating = selectedRating;
+
+  if (!rating) {
+    alert("⚠️ Please select a star rating!");
+    return;
   }
 
-  // ✅ Initial Render
-  renderReviews();
+  let newReview = { name, email, message, rating };
+  reviews.push(newReview);
+  localStorage.setItem("reviews", JSON.stringify(reviews));
+  renderReviews(allVisible);
+
+  // EmailJS Send
+  emailjs.send("service_9hwj82y", "template_nr7fqlw", {
+    customer_name: name,
+    email: email,
+    message: message,
+    rating: rating
+  }).then(() => {
+    alert("✅ Thank you for your feedback!");
+    this.reset();
+  }).catch(() => {
+    alert("❌ Failed to send feedback.");
+  });
+});
+
+// Initial Render
+renderReviews();
 </script>
-
-
-  <!-- 🌐 Footer -->
-<footer style="background:#333;color:#fff;text-align:center;padding:20px;margin-top:40px;">
-  <p>© 2025 RS Electrician Services. All Rights Reserved.</p>
-  <p>
-    📞 <a href="tel:+916389293604" style="color:#ffeb3b;text-decoration:none;">+91 6389293604</a> |
-    💬 <a href="https://wa.me/916389293604" target="_blank" style="color:#25d366;text-decoration:none;">WhatsApp</a> |
-    ✉️ <a href="mailto:rselectrician9283@gmail.com" style="color:#4da6ff;text-decoration:none;">Email Us</a>
-  </p>
-  <p style="margin-top:8px;font-size:14px;">
-    Designed with ❤️ for trusted and affordable electrical services
-  </p>
-</footer>  
